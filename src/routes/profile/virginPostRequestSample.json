@@ -1,0 +1,17 @@
+{
+    "bookingType": "hotel",
+  
+    "location": "orlando",
+  
+    "departureDate": "24-05-2022",
+  
+    "duration": "7",
+  
+    "partyCompositions": [
+        {
+            "adults": 2,
+            "childAges": [],
+            "infants": 0
+        }
+    ]
+}
