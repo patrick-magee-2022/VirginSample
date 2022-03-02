@@ -1,6 +1,5 @@
 import { h } from 'preact';
 import { useState } from "preact/hooks";
-let sampleResults = require("../profile/results.json");
 // Note: `user` comes from the URL, courtesy of our router
 const SearchHolidays = () => {
     const [returnData, setReturnData] = useState(null);
