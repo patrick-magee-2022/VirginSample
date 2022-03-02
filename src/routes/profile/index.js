@@ -7,23 +7,22 @@ const SearchHolidays = () => {
     const [isFutureDate, setIsFutureDate] = useState(true);
     const [isFiltered, setIsFiltered] = useState(false);
     const [isFilteredByPrice, setIsFilteredByPrice] = useState(false);
-
     const [isFilteredByStarRating, setIsFilteredByStarRating] = useState(false);
     const [isFilteredByFacilities, setIsFilteredByFacilities] = useState(false);
+    const [isError, setIsError] = useState(false);
     let [sortedArray, setSortedArray] = useState(null);
     const cities = ["New York", "Orlando", "Barbados", "Toronto"];
     const currentDateTime = new Date();
     function checkDateField() {
         let dateValue = document.getElementById('inputDate');
         let checkDateValue = new Date(dateValue.value);
-        console.log("checkDateValue", checkDateValue)
         if (checkDateValue < currentDateTime) {
             setIsFutureDate(false);
-            console.log("wrong date", isFutureDate);
-
         }
     }
     async function getHolidays(event) {
+        setReturnData(null)
+        setIsError(false);
         event.preventDefault();
         let locationValue = event.target[0].value.toLowerCase();
         let dateValue = document.getElementById("inputDate").value;
@@ -48,12 +47,18 @@ const SearchHolidays = () => {
                 body: JSON.stringify(postObject)
             };
 
-            const response  = await fetch('https://www.virginholidays.co.uk/cjs-search-api/search', requestOptions);
-            const data = await response.json();
-            console.log("response", data);
-            if (data && data.length !== 0) {
+            const response  = await fetch('https://www.virginholidays.co.uk/cjs-search-api/search', requestOptions)
+            .then(res => {
+                return res.json();
+            })
+            .then(data => {
                 setReturnData(data);
-            }
+
+            })
+            .catch(err  => {
+                console.log("error", err);
+                setIsError(true);
+            })
 
             }
     }
@@ -71,15 +76,10 @@ const SearchHolidays = () => {
             content.push(hotels[i].content);
             facilities.push(hotels[i].content.hotelFacilities);
         }
-        console.log("hotels", hotels);
-        console.log("content", content);
-        console.log("facilities", facilities);
         if (event.target.value === "price") {
-            console.log("isFilteredByPrice", isFilteredByPrice)
             setIsFilteredByPrice(true);
             setIsFilteredByStarRating(false);
             setIsFilteredByFacilities(false);
-            console.log("paddy", event.target.value, isFilteredByPrice);
             sortedArray = returnData.holidays;
             sortedArray?.sort((a, b) => (a.pricePerPerson > b.pricePerPerson ? -1 : 1))
 
@@ -130,6 +130,11 @@ const SearchHolidays = () => {
                         </div>
                         </div>
                 </form>
+                {isError &&
+                    <div class="col-6 p-2">
+                        <div class="alert alert-danger justify-content-center">Error Retrieving Data</div>
+                    </div>
+                }
                 {returnData &&
                     <>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-center">
@@ -151,11 +156,6 @@ const SearchHolidays = () => {
                         </>))}
                 </div>
             </div>}
-            {console.log("sortedArray",sortedArray )}
-            {sortedArray && sortedArray.length !==0 && sortedArray.forEach(element => {
-                console.log("element", element.hotel);
-            })}
-
             {sortedArray && sortedArray.length !== 0 && isFilteredByPrice && <div class="row">
                 <div class="col-8 justify-content-center p-2">
                     {sortedArray.map((currentEl, index) => (

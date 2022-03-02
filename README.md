@@ -15,8 +15,15 @@ npm run build
 # test the production build locally
 npm run serve
 
+# to run locally in chrome browser (MAC)
+open -na Google\ Chrome --args --user-data-dir=/tmp/temporary-chrome-profile-dir --disable-web-security --disable-site-isolation-trials
+
+# run locally on chrome browser (Windows: Not Tested)
+chrome.exe --user-data-dir=%TMP%\temporary-chrome-profile-dir --disable-web-security --disable-site-isolation-trials
+
 # run tests with jest and enzyme
 npm run test
 ```
+
 
 For detailed explanation on how things work, checkout the [CLI Readme](https://github.com/developit/preact-cli/blob/master/README.md).
