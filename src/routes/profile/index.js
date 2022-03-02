@@ -22,6 +22,10 @@ const SearchHolidays = () => {
     async function getHolidays(event) {
         setReturnData(null)
         setIsError(false);
+        setIsFiltered(false);
+        setIsFilteredByPrice(false);
+        setIsFilteredByStarRating(false);
+        setIsFilteredByFacilities(false);
         event.preventDefault();
         let locationValue = event.target[0].value.toLowerCase();
         let dateValue = document.getElementById("inputDate").value;
@@ -159,7 +163,7 @@ const SearchHolidays = () => {
                 <div class="col-8 justify-content-center p-2">
                     {sortedArray.map((currentEl, index) => (
                         <>
-                            {currentEl.hote && currentEl.hote.name && <h4>Name: {currentEl.hotel.name}</h4>}
+                            {currentEl.hotel && currentEl.hotel.name && <h4>Name: {currentEl.hotel.name}</h4>}
                             {currentEl.pricePerPerson && <h4 class="total-price">Price Per Person: {currentEl.pricePerPerson}</h4>}
                             <hr style="border-top: dotted 1px;" />
                         </>))}
