@@ -1,7 +1,10 @@
-import { h } from 'preact';
+import { h, Fragment } from 'preact';
 import { useState } from "preact/hooks";
-// Note: `user` comes from the URL, courtesy of our router
-const SearchHolidays = () => {
+import  FilterByPrice  from './Filter/filterByPrice.component';
+import  FilterByRating  from './Filter/filterByRating.component';
+import  FilterByFacilities  from './Filter/filterByFacilities.component';
+
+const Search = () => {
     const [returnData, setReturnData] = useState(null);
     const [isFutureDate, setIsFutureDate] = useState(true);
     const [isFiltered, setIsFiltered] = useState(false);
@@ -50,11 +53,12 @@ const SearchHolidays = () => {
                 body: JSON.stringify(postObject)
             };
 
-            const response  = await fetch('https://www.virginholidays.co.uk/cjs-search-api/search', requestOptions)
+            fetch('https://www.virginholidays.co.uk/cjs-search-api/search', requestOptions)
             .then(res => {
                 return res.json();
             })
             .then(data => {
+                console.log(data);
                 setReturnData(data);
 
             })
@@ -103,7 +107,7 @@ const SearchHolidays = () => {
 
             setSortedArray(sortedArray);
 
-    };
+    }
 	return (
         <div class="container">
             <div class="row">
@@ -112,8 +116,8 @@ const SearchHolidays = () => {
                             <div class="col-4">
                             <label for="inputCity">City</label>
                             <select class="form-select form-select-lg mb-3" aria-label="Select A City">
-                                {cities.map((currentCity) => (
-                                    <option value={currentCity}>{currentCity}</option>
+                                {cities.map((currentCity, curInd) => (
+                                    <option key={curInd} value={currentCity}>{currentCity}</option>
                                 ))}
                             </select>
                             </div>
@@ -150,45 +154,48 @@ const SearchHolidays = () => {
             {returnData && !isFiltered && <div class="row">
                 <div class="col-8 justify-content-center">
                     {returnData.holidays.map((currentHol, index) => (
-                        <>
+                        <Fragment key={index}>
                             {currentHol.hotel && currentHol.hotel.name &&<h2 class="title">Name: {currentHol.hotel.name}</h2>}
                             {currentHol.totalPrice && <h4 class="total-price">Total Price: {currentHol.totalPrice}</h4>}
                             {currentHol.hotel && currentHol.hotel.content 
                             && currentHol.hotel.content.hotelDescription && <p>Description: {currentHol.hotel.content.hotelDescription}</p>}
                             <hr style="border-top: dotted 1px;" />
-                        </>))}
+                        </Fragment>))}
                 </div>
             </div>}
-            {sortedArray && sortedArray.length !== 0 && isFilteredByPrice && <div class="row">
+            {sortedArray && sortedArray.length !==0  && isFilteredByPrice && <FilterByPrice data={sortedArray} />}
+            {/* {sortedArray && sortedArray.length !== 0 && isFilteredByPrice && <div class="row">
                 <div class="col-8 justify-content-center p-2">
-                    {sortedArray.map((currentEl, index) => (
-                        <>
+                    {sortedArray.map((currentEl, curIndex) => (
+                        <Fragment key={curIndex}>
                             {currentEl.hotel && currentEl.hotel.name && <h4>Name: {currentEl.hotel.name}</h4>}
                             {currentEl.pricePerPerson && <h4 class="total-price">Price Per Person: {currentEl.pricePerPerson}</h4>}
-                            <hr style="border-top: dotted 1px;" />
-                        </>))}
+                            <hr  />
+                        </Fragment>))}
                 </div>
-            </div>}
-            {sortedArray && sortedArray.length !==0 && isFilteredByStarRating && <div class="row">
+            </div>} */}
+			{sortedArray && sortedArray.length !==0 && isFilteredByStarRating && <FilterByRating data={sortedArray} />}
+            {/* {sortedArray && sortedArray.length !==0 && isFilteredByStarRating && <div class="row">
                 <div class="col-8 justify-content-center p-2">
-                    {sortedArray.map((currentHol, index) => (
-                        <>
+                    {sortedArray.map((currentHol, curIndex1) => (
+                        <Fragment key={curIndex1}>
                             {currentHol.name && <h2 class="title">Name: {currentHol.name}</h2>}
                             { currentHol.starRating && <h4 class="total-price">Rating: {currentHol.starRating}</h4>}
-                            <hr style="border-top: dotted 1px;" />
-                        </>))}
+                            <hr  />
+                        </Fragment>))}
                 </div>
-            </div>}
-            {sortedArray && sortedArray.length !==0 && isFilteredByFacilities && <div class="row">
+            </div>} */}
+			{ sortedArray && sortedArray.length !==0 && isFilteredByFacilities && <FilterByFacilities data={sortedArray} />}
+            {/* {sortedArray && sortedArray.length !==0 && isFilteredByFacilities && <div class="row">
                 <div class="col-8 justify-content-center p-2">
-                    {sortedArray.map((currentHol, index) => (
-                        <>
+                    {sortedArray.map((currentHol, curIndex2) => (
+                        <Fragment key={curIndex2}>
                             {currentHol.name && <h2 class="title">Name: {currentHol.name}</h2>}
                             {currentHol.hotelFacilities && <h4 class="total-price">Facilities: {currentHol.hotelFacilities}</h4>}
-                            <hr style="border-top: dotted 1px;" />
-                        </>))}
+                            <hr />
+                        </Fragment>))}
                 </div>
-            </div>}
+            </div>} */}
          </div>
         
 
@@ -197,4 +204,4 @@ const SearchHolidays = () => {
 
 	);
 };
-export default SearchHolidays;
+export default Search;

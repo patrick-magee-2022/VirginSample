@@ -4,8 +4,8 @@ import { h } from 'preact';
 import Header from './header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // Code-splitting is automated for `routes` directory
-import Home from '../routes/home';
-import SearchHolidays from '../routes/profile';
+import Home from './home';
+import Search from './search/search.component';
 
 
 
@@ -13,7 +13,7 @@ const App = () => (
 	<div id="app">
 		<Header />
 			<Home path="/" />
-			<SearchHolidays />
+			<Search />
 	</div>
 )
 
