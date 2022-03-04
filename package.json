@@ -31,7 +31,9 @@
     "preact": "^10.3.2",
     "preact-render-to-string": "^5.1.4",
     "preact-router": "^3.2.1",
-    "react-bootstrap": "^2.1.2"
+    "react-bootstrap": "^2.1.2",
+    "react-redux": "^7.2.6",
+    "redux": "^4.1.2"
   },
   "jest": {
     "preset": "jest-preset-preact",
